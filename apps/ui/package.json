@@ -1,5 +1,5 @@
 {
-  "name": "web",
+  "name": "@timesheets/ui",
   "version": "1.0.0",
   "description": "timesheet web application",
   "scripts": {
@@ -15,7 +15,7 @@
     "@types/react": "^18.2.48",
     "@types/react-dom": "^18.2.18",
     "@vitejs/plugin-react": "^4.2.1",
-    "types": "workspace:^",
+    "@timesheets/types": "workspace:^",
     "typescript": "^5.3.3",
     "vite": "^5.0.12"
   },
