@@ -15,6 +15,7 @@
     "isolatedModules": true,
     "jsx": "preserve",
     "types": ["vite/client"],
+    "allowImportingTsExtensions": true
   },
   "include": ["./src"],
 }

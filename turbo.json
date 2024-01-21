@@ -1,15 +1,16 @@
 {
   "pipeline": {
-    "test": {},
-    "dev": {
-      "cache": false,
-      "dependsOn": ["test"]
-    },
     "type-check": {
       "outputs": []
     },
+    "test": {},
+    "lint": {},
+    "dev": {
+      "cache": false,
+      "dependsOn": ["test", "lint"]
+    },
     "build": {
-      "dependsOn": ["type-check", "test"],
+      "dependsOn": ["type-check", "test", "lint"],
       "outputs": ["dist/**"]
     }
   }

@@ -6,11 +6,18 @@
   "scripts": {
     "prettier": "prettier --write .",
     "test": "vitest",
-    "dev": "vitest && turbo dev"
+    "dev": "vitest && turbo dev",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
   },
   "author": "",
   "license": "ISC",
   "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^6.0.0",
+    "@typescript-eslint/parser": "^6.0.0",
+    "eslint": "^8.45.0",
+    "eslint-config-prettier": "^9.1.0",
+    "eslint-plugin-prettier": "^5.1.3",
     "prettier": "^3.2.4",
     "turbo": "^1.11.3",
     "vitest": "^1.2.1"
