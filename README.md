@@ -33,9 +33,10 @@
     <img src="images/logo.png" alt="Logo" width="" height="300">
   </a>
 
-    <h3 align="center">Out-Of-Office Timesheets</h3>
+<h3 align="center">Out-Of-Office Timesheets</h3>
 
-    <p align="center">Mobile timesheet entry for your out-of-office employees </p>
+  <p align="center">
+    Mobile timesheet entry for your out-of-office employees </p>
     <p>Upload jobsites </p>
     <p>Download Timesheets </p>
     <p>Auto-fill job location with GPS</p>
@@ -48,6 +49,7 @@
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
+  
 </div>
 
 <!-- TABLE OF CONTENTS -->
