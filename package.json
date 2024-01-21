@@ -1,16 +1,18 @@
 {
   "name": "timesheets-turbo",
   "version": "1.0.0",
-  "description": "",
+  "description": "workspace root",
   "main": "index.js",
   "scripts": {
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "test": "vitest",
+    "dev": "vitest && turbo dev"
   },
-  "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
     "prettier": "^3.2.4",
-    "turbo": "^1.11.3"
+    "turbo": "^1.11.3",
+    "vitest": "^1.2.1"
   }
 }

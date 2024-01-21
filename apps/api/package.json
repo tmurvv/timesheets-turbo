@@ -6,7 +6,8 @@
     "dev": "tsx watch src/index.ts",
     "build": "esbuild src/index.ts --bundle --platform=node --outfile=dist/index.js --external:express --external:cors",
     "start": "node dist/index.js",
-    "type-check": "tsc"
+    "type-check": "tsc",
+    "test": "vitest run"
   },
   "devDependencies": {
     "@types/cors": "^2.8.17",
