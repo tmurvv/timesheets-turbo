@@ -33,11 +33,12 @@
     <img src="images/logo.png" alt="Logo" width="" height="300">
   </a>
 
-<h3 align="center">Out-Of-Office Timesheets</h3>
+    <h3 align="center">Out-Of-Office Timesheets</h3>
 
-  <p align="center">
-    Mobile timesheet entry for your out-of-office employees </p>
-<div style="display: flex; justify-content: center;"><ul style="list-style: none"><li>Upload jobsites </li><li>Download Timesheets </li><li>Auto-fill job location with GPS</li></ul></div>
+    <p align="center">Mobile timesheet entry for your out-of-office employees </p>
+    <p>Upload jobsites </p>
+    <p>Download Timesheets </p>
+    <p>Auto-fill job location with GPS</p>
     <br />
     <a href="https://github.com/othneildrew/Best-README-Template"><strong>Explore the docs »</strong></a>
     <br />
@@ -47,7 +48,6 @@
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Report Bug</a>
     ·
     <a href="https://github.com/othneildrew/Best-README-Template/issues">Request Feature</a>
-  </p>
 </div>
 
 <!-- TABLE OF CONTENTS -->
