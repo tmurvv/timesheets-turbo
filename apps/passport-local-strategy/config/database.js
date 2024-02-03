@@ -3,9 +3,9 @@ import mongoose from'mongoose';
 
 config();
 
-const conn = process.env.DB_STRING;
+const connectionString = process.env.DB_STRING;
 
-const connection = mongoose.createConnection(conn, {
+const connection = mongoose.createConnection(connectionString, {
     useNewUrlParser: true,
     useUnifiedTopology: true
 });

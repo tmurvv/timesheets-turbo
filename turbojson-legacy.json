@@ -1,0 +1,17 @@
+{
+  "pipeline": {
+    "type-check": {
+      "outputs": []
+    },
+    "test": {},
+    "lint": {},
+    "dev": {
+      "cache": false,
+      "dependsOn": ["test", "lint"]
+    },
+    "build": {
+      "dependsOn": ["type-check", "test", "lint"],
+      "outputs": ["dist/**"]
+    }
+  }
+}

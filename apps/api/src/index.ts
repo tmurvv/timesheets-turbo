@@ -1,30 +1,28 @@
 import cors from "cors";
 import express from "express";
-import { MongoClient } from "mongodb";
 import { config } from "dotenv";
-import { Workspace } from "@timesheets/types";
+
+import { Task } from "@timesheets/types";
+
+import { mongoClient } from "./config/database";
 
 config();
 
 const app = express();
 const port = 5050;
-const DATABASE_STAGING = process.env.DATABASE_STAGING ?? "";
-const DATABASE_PASSWORD = process.env.DATABASE_PASSWORD ?? "";
-const url = DATABASE_STAGING.replace("<PASSWORD>", DATABASE_PASSWORD);
-const mongoClient = new MongoClient(url);
 
 async function main() {
   app.use(cors({ origin: "http://localhost:3000" }));
   app.use(express.json());
 
-  app.get("/workspaces", (_, response) => {
-    const workspaces: Workspace[] = [
-      { name: "timesheets API", version: "1.0.0" },
-      { name: "timesheets TYPES", version: "1.0.0" },
-      { name: "timesheets UI", version: "1.0.0" },
+  app.get("/tasks", (_, response) => {
+    const tasks: Task[] = [
+      { _id: "1234", name: "timesheets API", isCurrent: true },
+      { _id: "1235", name: "timesheets TYPES", isCurrent: true },
+      { _id: "1236", name: "timesheets UI", isCurrent: true },
     ];
 
-    response.json({ data: workspaces });
+    response.json({ data: tasks });
   });
 
   await mongoClient.connect();

@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "types": ["node", "dotenv/config"],
     "baseUrl": ".",
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
