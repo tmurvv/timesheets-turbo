@@ -78,6 +78,9 @@ importers:
       '@types/passport-local':
         specifier: ^1.0.38
         version: 1.0.38
+      '@types/uuid':
+        specifier: ^9.0.7
+        version: 9.0.7
       config:
         specifier: link:@types/dotenv/config
         version: link:@types/dotenv/config
@@ -90,6 +93,9 @@ importers:
       typescript:
         specifier: ^5.3.3
         version: 5.3.3
+      uuid:
+        specifier: ^9.0.1
+        version: 9.0.1
 
   apps/passport-local-strategy:
     dependencies:
@@ -5198,7 +5204,6 @@ packages:
   /uuid@9.0.1:
     resolution: {integrity: sha512-b+1eJOlsR9K8HJpow9Ok3fiWOWSIcIzXodvv0rQjVoOVNpWMpxf1wZNpt4y9h10odCNrqnYp1OBzRktckBe3sA==}
     hasBin: true
-    dev: false
 
   /validate-npm-package-name@5.0.0:
     resolution: {integrity: sha512-YuKoXDAhBYxY7SfOKxHBDoSyENFeW5VvIIQp2TGQuit8gpK6MnWaQelBKxso72DoxTZfZdcP3W90LqpSkgPzLQ==}

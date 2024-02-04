@@ -1,33 +1,63 @@
-import { Router } from 'express';
-import passport from 'passport';
+import passport from "passport";
+import { Router } from "express";
+import { v4 as uuid } from "uuid";
+
+import { db } from "../config/database.js";
+import { generatePassword } from "../utils/passwords.js";
+import { User } from "../types/User.js";
 
 const router = Router();
 
-router.post('/login',
-    passport.authenticate('local'),
-    (req, res) => {
-        res.send('Logged in');
-    }
-);
+router.put("/signup", async (req, res) => {
+  const saltHash = generatePassword(req.body.pw);
+  const salt = saltHash.salt;
+  const hash = saltHash.hash;
 
-router.get('/logout', (req, res, next) => {
-    req.logout(function(err) {
-        if (err) { return next(err); }
-        res.redirect('/');
-    });
+  const newUser: User = {
+    id: uuid(),
+    username: req.body.uname,
+    hash: hash,
+    salt: salt,
+    admin: true,
+  };
 
-    res.send('Logged out');
+  await db
+    .collection("users")
+    .updateOne({ id: newUser.id }, { $set: newUser }, { upsert: true });
+
+  res.redirect("/auth/login");
 });
 
-router.post('/signup', (req, res) => {
-    const { username, password } = req.body;
-    // users.push({
-    //     id: users.length + 1 + '',
-    //     username,
-    //     password
-    // });
-    console.log("from signup: ", username, password);
-    res.send('NYI Signed up');
+router.post(
+    "/login",
+    passport.authenticate("local", {
+      failureRedirect: "/auth/login-failure",
+      successRedirect: "/auth/login-success",
+    }),
+);
+
+router.get("/login-success", (req, res) => {
+  res.send("Logged in");
+});
+
+router.get("/login-failure", (req, res) => {
+  res.send("Login not successful");
+});
+
+router.get("/login", (req, res) => {
+  res.send("login ui here");
+});
+
+router.get("/logout", (req, res, next) => {
+  req.logout(function (err) {
+    if (err) {
+      return next(err);
+    }
+
+    res.redirect("/");
+  });
+
+  res.send("Logged out");
 });
 
 export default router;
