@@ -1,5 +1,14 @@
 {
   "compilerOptions": {
+
+    "allowUnreachableCode": false,
+    "allowUnusedLabels": false,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noUncheckedIndexedAccess": true,
+    "useUnknownInCatchVariables": true,
     "types": ["node", "dotenv/config"],
     "baseUrl": ".",
     "target": "es2017",
