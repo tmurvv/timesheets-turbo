@@ -36,7 +36,7 @@ async function main() {
 
 main()
   .then(() =>
-    console.log(`Connected to database! ${process.env.DATABASE_NAME}`),
+    console.log(`Connected to database! ${process.env["DATABASE_NAME"]}`),
   )
   .catch((error) => console.log(error))
   .finally(() => mongoClient.close());

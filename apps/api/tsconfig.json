@@ -1,6 +1,5 @@
 {
   "compilerOptions": {
-
     "allowUnreachableCode": false,
     "allowUnusedLabels": false,
     "noImplicitReturns": true,
@@ -9,7 +8,7 @@
     "noPropertyAccessFromIndexSignature": true,
     "noUncheckedIndexedAccess": true,
     "useUnknownInCatchVariables": true,
-    "types": ["node", "dotenv/config"],
+    "types": ["node"],
     "baseUrl": ".",
     "target": "es2017",
     "lib": ["dom", "dom.iterable", "esnext"],
@@ -26,8 +25,5 @@
     "outDir": "./dist",
     "moduleResolution": "node"
   },
-  "files": [
-    ".env"
-  ],
   "include": ["./src"],
 }

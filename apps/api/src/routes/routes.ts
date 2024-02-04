@@ -1,6 +1,5 @@
-
 import { Router } from 'express';
-import passport from './passport';
+import passport from 'passport';
 
 const router = Router();
 
@@ -11,19 +10,24 @@ router.post('/login',
     }
 );
 
-router.get('/logout', (req, res) => {
-    req.logout();
+router.get('/logout', (req, res, next) => {
+    req.logout(function(err) {
+        if (err) { return next(err); }
+        res.redirect('/');
+    });
+
     res.send('Logged out');
 });
 
 router.post('/signup', (req, res) => {
     const { username, password } = req.body;
-    users.push({
-        id: users.length + 1 + '',
-        username,
-        password
-    });
-    res.send('Signed up');
+    // users.push({
+    //     id: users.length + 1 + '',
+    //     username,
+    //     password
+    // });
+    console.log("from signup: ", username, password);
+    res.send('NYI Signed up');
 });
 
 export default router;
