@@ -8,7 +8,7 @@
 
 import { z } from "zod";
 
-export const User = z.object({
+export const userSchema = z.object({
   createdOn: z.string().datetime().min(1),
   email: z.string().email().optional(),
   first: z.string().min(1),
@@ -31,5 +31,5 @@ export const User = z.object({
 // User.parse({ username: "Ludwig" });
 
 // extract the inferred type
-// export type User = z.infer<typeof User>;
+export type User = z.infer<typeof userSchema>;
 // { username: string }

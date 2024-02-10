@@ -3,7 +3,8 @@ import cors from "cors";
 import express from "express";
 
 import passport from "./config/passport";
-import router from "./routes/routes";
+import {authRouter} from "./routes/auth";
+import {timesheetsRouter} from "./routes/timesheets";
 
 config();
 
@@ -14,7 +15,8 @@ async function main() {
   app.use(cors({ origin: "http://localhost:3000" }));
   app.use(express.json());
   app.use(passport.initialize());
-  app.use("/auth", router);
+  app.use("/auth", authRouter);
+  app.use("/timesheets", timesheetsRouter);
 
   app.get("/", (_, res) => res.send("Health check: SUCCESS"));
 

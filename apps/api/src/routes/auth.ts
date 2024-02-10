@@ -1,14 +1,14 @@
 import passport from "passport";
 import { Router } from "express";
 import { v4 as uuid } from "uuid";
-import { z } from "zod";
 
 import { db } from "../config/database.js";
 import { generatePassword } from "../utils/passwords.js";
 import { User } from "../types/User.js";
+import { userSchema } from "../types/User.js";
 
 const router = Router();
-const BodySchema = User.pick({
+const BodySchema = userSchema.pick({
   first: true,
   last: true,
   email: true,
@@ -18,10 +18,12 @@ const BodySchema = User.pick({
   username: true,
 });
 
-const getText = (found: User) => {
-  if (found.email && found.phone) return "phone and email";
-  if (found.email) return "email";
-  if (found.phone) return "phone";
+const getText = (exists: User) => {
+  if (exists.email && exists.phone) return "phone and email";
+  if (exists.email) return "email";
+  if (exists.phone) return "phone";
+
+  return "identifier";
 };
 
 router.put("/signup", async (req, res) => {
@@ -33,14 +35,17 @@ router.put("/signup", async (req, res) => {
   }
 
   try {
-    const found = await db.collection("users").findOne({
+    const existsDoc = await db.collection("users").findOne({
       $or: [{ email: req.body.email }, { phone: req.body.phone }],
     });
 
-    if (found) {
+    if (existsDoc) {
+      // Parse into User type
+      const user: User = userSchema.parse(existsDoc);
+
       return res
         .status(400)
-        .send(`User with that ${getText(found)} already exists`);
+        .send(`User with that ${getText(user)} already exists`);
     }
   } catch (error) {
     return res.status(500).send(error);
@@ -68,6 +73,7 @@ router.put("/signup", async (req, res) => {
     await db
       .collection("users")
       .updateOne({ id: newUser.id }, { $set: newUser }, { upsert: true });
+    return res.redirect("/auth/login");
   } catch (error) {
     // if (JSON.stringify(error).includes("11000")) {
     //   return res.redirect("/auth/signup-failure/11000");
@@ -81,8 +87,6 @@ router.put("/signup", async (req, res) => {
           : error,
       );
   }
-
-  res.redirect("/auth/login");
 });
 
 router.post(
@@ -125,4 +129,4 @@ router.get("/logout", (req, res, next) => {
   res.send("Logged out");
 });
 
-export default router;
+export const authRouter = router;
