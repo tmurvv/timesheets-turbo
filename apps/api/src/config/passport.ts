@@ -11,12 +11,12 @@ import { db } from "./database";
 passport.use(
   new LocalStrategy(
     {
-      usernameField: "uname",
-      passwordField: "pw",
+      usernameField: "login",
+      passwordField: "password",
     },
-    async (username, password, done) => {
+    async (login, password, done) => {
       const users = await db.collection("users").find().toArray();
-      const found = users.find((user) => user["username"] === username);
+      const found = users.find((user) => user["email"] === login || user["phone"] === login);
 
       if (found && validatePassword(password, found["hash"], found["salt"])) {
         done(null, found);

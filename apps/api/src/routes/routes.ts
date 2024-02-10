@@ -9,16 +9,22 @@ import { User } from "../types/User.js";
 const router = Router();
 
 router.put("/signup", async (req, res) => {
-  const saltHash = generatePassword(req.body.pw);
+  const saltHash = generatePassword(req.body.password);
   const salt = saltHash.salt;
   const hash = saltHash.hash;
 
   const newUser: User = {
+    createdOn: new Date().toISOString(),
+    email: req.body.email,
+    first: req.body.first,
     id: uuid(),
-    username: req.body.uname,
-    hash: hash,
-    salt: salt,
-    admin: true,
+    last: req.body.last,
+    password: hash,
+    preferredContact: req.body.preferredContact,
+    phone: req.body.phone,
+    role: req.body.role,
+    salt,
+    username: req.body.username,
   };
 
   await db
