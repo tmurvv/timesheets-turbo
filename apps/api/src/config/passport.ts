@@ -15,10 +15,20 @@ passport.use(
       passwordField: "password",
     },
     async (login, password, done) => {
+      console.log("login: ", login);
+      console.log("password: ", password);
       const users = await db.collection("users").find().toArray();
-      const found = users.find((user) => user["email"] === login || user["phone"] === login);
+      const found = users.find(
+        (user) =>
+          user["email"] === login ||
+          user["phone"] === login ||
+          user["username"] === login,
+      );
 
-      if (found && validatePassword(password, found["hash"], found["salt"])) {
+      if (
+        found &&
+        validatePassword(password, found["password"], found["salt"])
+      ) {
         done(null, found);
       } else {
         done(null, false);

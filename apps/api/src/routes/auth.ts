@@ -1,6 +1,7 @@
 import passport from "passport";
-import { Router } from "express";
+import { NextFunction, Request, Response, Router } from "express";
 import { v4 as uuid } from "uuid";
+import { z } from "zod";
 
 import { db } from "../config/database.js";
 import { generatePassword } from "../utils/passwords.js";
@@ -8,54 +9,80 @@ import { User } from "../types/User.js";
 import { userSchema } from "../types/User.js";
 
 const router = Router();
-const BodySchema = userSchema.pick({
-  first: true,
-  last: true,
-  email: true,
-  password: true,
-  phone: true,
-  role: true,
-  username: true,
-});
 
-const getText = (exists: User) => {
-  if (exists.email && exists.phone) return "phone and email";
-  if (exists.email) return "email";
-  if (exists.phone) return "phone";
+type TextPartial = Partial<Pick<User, "phone" | "email">>;
+const getText = ({ phone, email }: TextPartial) => {
+  if (email && phone) return "phone and email";
+  if (email) return "email";
+  if (phone) return "phone";
 
   return "identifier";
 };
 
-router.put("/signup", async (req, res) => {
+const BodySchema = userSchema
+  .pick({
+    first: true,
+    last: true,
+    username: true,
+    email: true,
+    phone: true,
+  })
+  .extend({
+    password: z
+      .string()
+      .min(8, { message: "Password must be at least 8 characters" })
+      .regex(/[a-z]/, { message: "Password must contain a lowercase letter" })
+      .regex(/[A-Z]/, { message: "Password must contain an uppercase letter" })
+      .regex(/[0-9]/, { message: "Password must contain a number" }),
+  });
+
+const validateBody = async (
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) => {
+  // validate the body
   const result = BodySchema.safeParse(req.body);
-  console.log("resultofparse", result);
+  console.log("resultofbodyparse", result);
 
   if (!result.success) {
     return res.status(400).send(result.error);
   }
 
+  const { email, phone } = req.body;
+  // check if the user already exists
   try {
     const existsDoc = await db.collection("users").findOne({
-      $or: [{ email: req.body.email }, { phone: req.body.phone }],
+      $or: [
+        { $and: [{ email: { $ne: null } }, { email }] },
+        { $and: [{ phone: { $ne: null } }, { phone }] },
+      ],
     });
 
-    if (existsDoc) {
-      // Parse into User type
-      const user: User = userSchema.parse(existsDoc);
+    console.log("existsDoc", existsDoc);
 
+    if (existsDoc) {
       return res
         .status(400)
-        .send(`User with that ${getText(user)} already exists`);
+        .send(
+          `User with that ${getText({ phone: existsDoc["phone"], email: existsDoc["email"] })} already exists`,
+        );
+    } else {
+      // TODO: why is next underlined by TS
+      // @ts-ignore
+      next();
     }
   } catch (error) {
     return res.status(500).send(error);
   }
+};
 
+const createUser = (req: Request, res: Response, next: NextFunction) => {
   const saltHash = generatePassword(req.body.password);
   const salt = saltHash.salt;
   const hash = saltHash.hash;
 
-  const newUser: User = {
+  req.body.createdUser = {
     createdOn: new Date().toISOString(),
     email: req.body.email,
     first: req.body.first,
@@ -64,22 +91,31 @@ router.put("/signup", async (req, res) => {
     password: hash,
     preferredContact: req.body.preferredContact,
     phone: req.body.phone,
-    role: req.body.role,
+    role: req.body.role ?? "user",
     salt,
     username: req.body.username,
   };
+
+  // TODO: why is next underlined by TS
+  // @ts-ignore
+  next();
+};
+
+const addUser = async (req: Request, res: Response, next: NextFunction) => {
+  const newUser = req.body.createdUser;
 
   try {
     await db
       .collection("users")
       .updateOne({ id: newUser.id }, { $set: newUser }, { upsert: true });
-    return res.redirect("/auth/login");
+    return res.send("Welcome to Turbo Timesheets!");
+    // return res.redirect("/auth/login");
   } catch (error) {
     // if (JSON.stringify(error).includes("11000")) {
     //   return res.redirect("/auth/signup-failure/11000");
     // }
     // return res.redirect("/auth/signup-failure");
-    res
+    return res
       .status(500)
       .send(
         JSON.stringify(error).includes("11000")
@@ -87,10 +123,20 @@ router.put("/signup", async (req, res) => {
           : error,
       );
   }
-});
+};
+
+router.put("/signup", validateBody, createUser, addUser);
 
 router.post(
-  "/login",
+  "/login-email",
+  passport.authenticate("local", {
+    failureRedirect: "/auth/login-failure",
+    successRedirect: "/auth/login-success",
+  }),
+);
+
+router.post(
+  "/login-phone",
   passport.authenticate("local", {
     failureRedirect: "/auth/login-failure",
     successRedirect: "/auth/login-success",
