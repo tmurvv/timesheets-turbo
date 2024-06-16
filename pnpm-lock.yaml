@@ -35,9 +35,9 @@ importers:
 
   apps/api:
     dependencies:
-      '@types/node':
-        specifier: ^20.11.10
-        version: 20.11.10
+      '@types/lodash':
+        specifier: ^4.14.201
+        version: 4.14.202
       cors:
         specifier: ^2.8.5
         version: 2.8.5
@@ -47,6 +47,9 @@ importers:
       express:
         specifier: ^4.18.2
         version: 4.18.2
+      lodash:
+        specifier: ^4.17.21
+        version: 4.17.21
       mongodb:
         specifier: ^6.3.0
         version: 6.3.0
@@ -75,6 +78,9 @@ importers:
       '@types/express':
         specifier: ^4.17.21
         version: 4.17.21
+      '@types/node':
+        specifier: ^20.11.10
+        version: 20.11.10
       '@types/passport':
         specifier: ^1.0.16
         version: 1.0.16
@@ -1459,7 +1465,6 @@ packages:
 
   /@types/lodash@4.14.202:
     resolution: {integrity: sha512-OvlIYQK9tNneDlS0VN54LLd5uiPCBOp7gS5Z0f1mjoJYBrtStzgmJBxONW3U6OZqdtNzZPmn9BS/7WI7BFFcFQ==}
-    dev: true
 
   /@types/luxon@3.4.2:
     resolution: {integrity: sha512-TifLZlFudklWlMBfhubvgqTXRzLDI5pCbGa4P8a3wPyUQSW+1xQ5eDsreP9DWHX3tjq1ke96uYG/nwundroWcA==}

@@ -69,8 +69,9 @@ const validateBody = async (
         );
     } else {
       // TODO: why is next underlined by TS
+      // /* eslint "@typescript-eslint/ban-ts-comment": "off" */
       // @ts-ignore
-      next();
+      return next();
     }
   } catch (error) {
     return res.status(500).send(error);
@@ -86,7 +87,7 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
     createdOn: new Date().toISOString(),
     email: req.body.email,
     first: req.body.first,
-    id: uuid(),
+    id: req.body.id ?? uuid(),
     last: req.body.last,
     password: hash,
     preferredContact: req.body.preferredContact,
@@ -97,11 +98,12 @@ const createUser = (req: Request, res: Response, next: NextFunction) => {
   };
 
   // TODO: why is next underlined by TS
+  /* eslint "@typescript-eslint/ban-ts-comment": "off" */
   // @ts-ignore
-  next();
+  return next();
 };
 
-const addUser = async (req: Request, res: Response, next: NextFunction) => {
+const addUser = async (req: Request, res: Response) => {
   const newUser = req.body.createdUser;
 
   try {
@@ -128,15 +130,7 @@ const addUser = async (req: Request, res: Response, next: NextFunction) => {
 router.put("/signup", validateBody, createUser, addUser);
 
 router.post(
-  "/login-email",
-  passport.authenticate("local", {
-    failureRedirect: "/auth/login-failure",
-    successRedirect: "/auth/login-success",
-  }),
-);
-
-router.post(
-  "/login-phone",
+  "/login",
   passport.authenticate("local", {
     failureRedirect: "/auth/login-failure",
     successRedirect: "/auth/login-success",
@@ -160,7 +154,9 @@ router.get("/signup-failure/11000", (req, res) => {
 });
 
 router.get("/login", (req, res) => {
-  res.send("login ui here");
+  res.send(
+    "<h3>Login:</h3><input><h3>password:</h3><input><br /><br /><button type='button'>Submit</button>",
+  );
 });
 
 router.get("/logout", (req, res, next) => {
